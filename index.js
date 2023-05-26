@@ -26,6 +26,34 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    const toysCollection = client.db("carToys").collection("toys");
+    // const db = client.db("carToys");
+    // const toysCollection = db.collection("toys");
+
+    app.get('/toys', async(req, res)=>{
+        const result = await toysCollection.find({}).toArray()
+        res.send(result)
+    })
+
+
+    // post toys to server
+    app.get('/mytoys', async(req, res) =>{
+      let query = {}
+      console.log(req.query)
+      if(req.query?.sellerEmail){
+        query = {sellerEmail: req.query.sellerEmail}
+      }
+      const result = await toysCollection.find(query).toArray()
+      // console.log(result)
+      res.send(result)
+    })
+
+    app.post('/toys', async(req, res) =>{
+      const toys = req.body;
+      // console.log(toys)
+      const result = await toysCollection.insertOne(toys)
+      res.send(result)
+    })
 
 
 
