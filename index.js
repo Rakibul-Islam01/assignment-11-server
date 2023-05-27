@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // middleware
 app.use(cors());
@@ -39,7 +39,7 @@ async function run() {
     // post toys to server
     app.get('/mytoys', async(req, res) =>{
       let query = {}
-      console.log(req.query)
+      // console.log(req.query)
       if(req.query?.sellerEmail){
         query = {sellerEmail: req.query.sellerEmail}
       }
@@ -55,6 +55,16 @@ async function run() {
       res.send(result)
     })
 
+    // load single data
+    app.get('/toys/:id', async(req, res)=>{
+     const id = req.params.id;
+     const query = {_id : new ObjectId(id)}
+     const result = await toysCollection.findOne(query)
+     res.send(result)
+    })
+
+
+    
 
 
 
