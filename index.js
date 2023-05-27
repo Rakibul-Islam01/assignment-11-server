@@ -64,7 +64,28 @@ async function run() {
     })
 
 
-    
+    // car data updated
+    app.put('/toys/:id', async(req, res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id) }
+      const options ={upset: true}
+      const updateCarInfo = req.body;
+      const toys ={
+        $set: {
+          toyName: updateCarInfo.toyName, 
+          subCategory: updateCarInfo.subCategory, 
+          sellerName: updateCarInfo.sellerName, 
+          sellerEmail: updateCarInfo.sellerEmail, 
+          rating: updateCarInfo.rating, 
+          quantity: updateCarInfo.quantity, 
+          price: updateCarInfo.price, 
+          details: updateCarInfo.details
+        }
+      }
+      const result = await toysCollection.updateOne(filter, toys, options)
+      res.send(result)
+    })
+
 
 
 
