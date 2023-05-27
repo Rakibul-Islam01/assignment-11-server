@@ -1,11 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+const corsConfig = {
+  origin: "*",
+  credentials: "true",
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}
 const app = express();
 require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // middleware
-app.use(cors());
+// app.use(cors());
+app.options("", cors(corsConfig))
 app.use(express.json());
 
 
