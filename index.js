@@ -1,17 +1,18 @@
 const express = require("express");
 const cors = require("cors");
-const corsConfig = {
-  origin: "*",
-  credentials: "true",
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
-}
+// const corsConfig = {
+//   origin: "*",
+//   credentials: "true",
+//   methods: ['GET', 'POST', 'PUT', 'DELETE']
+// }
 const app = express();
+const port = process.env.PORT || 5000;
 require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // middleware
-// app.use(cors());
-app.options("", cors(corsConfig))
+app.use(cors());
+// app.options("", cors(corsConfig))
 app.use(express.json());
 
 
@@ -30,7 +31,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
+    await client.connect();
 
     const toysCollection = client.db("carToys").collection("toys");
     // const db = client.db("carToys");
@@ -122,9 +123,9 @@ app.get('/', (req, res) => {
 })
 
 
-app.listen( process.env.PORT || 5000, () => {
-  console.log("server is running on port 5000");
-});
+app.listen(port, () =>{
+  console.log(`Car Toys is running on port ${port}`)
+})
 
 
 
